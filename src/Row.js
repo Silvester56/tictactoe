@@ -6,7 +6,7 @@ class Row extends React.Component {
 
 	renderSquares() {
 		return this.props.squares.map((sqr, index) =>
-	  		<Square index={index} value={this.props.squares[index]} functest={() => this.props.callHandleClick(this.props.rowStart + index)} />
+	  		<Square key={index} index={index} value={this.props.squares[index]} functest={() => this.props.callHandleClick(this.props.rowStart + index)} />
 	  	);
 	}
 

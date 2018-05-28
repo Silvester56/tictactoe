@@ -5,7 +5,7 @@ class Board extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        squares: Array(9).fill(null),
+        squares: Array(parseInt(this.props.size)).fill(null),
         player: "X"
       };
   }
@@ -27,7 +27,7 @@ class Board extends React.Component {
 	  let step = Math.sqrt(this.state.squares.length);
 
 	   for (let i = 0; i < this.state.squares.length; i = i + step) {
-			str.push(<Row rowStart={i} squares={this.state.squares.slice(i, i + step)} callHandleClick={(tmp) => this.handleClick(tmp)}/>);
+			str.push(<Row key={i} rowStart={i} squares={this.state.squares.slice(i, i + step)} callHandleClick={(tmp) => this.handleClick(tmp)}/>);
 		}
 		return str;
   }
@@ -45,21 +45,51 @@ class Board extends React.Component {
 }
 
 function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+  let squareRoot =  Math.sqrt(squares.length);
+  let lines = [];
+  let tmp = [];
+  let winner = true;
+  let firstValue = "";
+
+  for (let i = 0; i < squares.length; i = i + squareRoot) { // Add all possible rows
+	  tmp = [];
+    for (let j = i; j < i + squareRoot; j++) {
+    	tmp.push(j);
     }
+	 lines.push(tmp);
+  }
+
+  for (let i = 0; i < squareRoot; i++) { // Add all possible columns
+  	tmp = [];
+    for (let j = i; j < i + 1 + squares.length - squareRoot; j = j + squareRoot) {
+  	   tmp.push(j);
+    }
+    lines.push(tmp);
+  }
+
+  tmp = [];
+  for (let i = 0; i < squares.length; i = i + squareRoot + 1) { // Add the top left to bottom right diagonal
+	 tmp.push(i);
+  }
+  lines.push(tmp);
+
+  tmp = [];
+  for (let i = squareRoot - 1; i < squares.length; i = i + squareRoot - 1) { // Add the top right to bottom left diagonal
+   tmp.push(i);
+  }
+  lines.push(tmp);
+
+  for (let i = 0; i < lines.length; i++) {
+	  firstValue = squares[lines[i][0]];
+	  winner = true;
+    for (let j = 1; j < lines[i].length; j++) {
+    	if (!firstValue || firstValue != squares[lines[i][j]]) {
+    		winner = false;
+    	}
+    }
+	 if (winner) {
+	 	return firstValue;
+	 }
   }
   return null;
 }
