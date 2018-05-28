@@ -1,5 +1,5 @@
 import React from 'react';
-import Square from './Square';
+import Row from './Row';
 
 class Board extends React.Component {
     constructor(props) {
@@ -13,6 +13,7 @@ class Board extends React.Component {
   handleClick(i) {
     const newSquares = this.state.squares.slice();
     const nextPlayer = this.state.player == 'X' ? 'O' : 'X';
+	 console.log(i);
 
     if (calculateWinner(newSquares) || newSquares[i]) {
       return;
@@ -21,38 +22,23 @@ class Board extends React.Component {
     this.setState({squares: newSquares, player: nextPlayer});
   }
 
-  renderSquare(i) {
-    return <Square value={this.state.squares[i]} functest={() => this.handleClick(i)} />;
+  renderFor() {
+	  let str = [];
+	  let step = Math.sqrt(this.state.squares.length);
+
+	   for (let i = 0; i < this.state.squares.length; i = i + step) {
+			str.push(<Row rowStart={i} squares={this.state.squares.slice(i, i + step)} callHandleClick={(tmp) => this.handleClick(tmp)}/>);
+		}
+		return str;
   }
 
   render() {
     const winner = calculateWinner(this.state.squares);
-    let status;
-
-    if (winner) {
-      status = 'Winner : ' + winner;
-    } else {
-      status = 'Current player: ' + this.state.player;
-    }
 
     return (
       <div>
-        <div className="status">{status}</div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        <div className="status">{winner ? 'Winner : ' + winner : 'Current player: ' + this.state.player}</div>
+          {this.renderFor()}
       </div>
     );
   }

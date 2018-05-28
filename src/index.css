@@ -41,7 +41,8 @@ ol, ul {
 }
 
 .game {
-  display: flex;
+  margin: 0 auto;
+  display: table;
   flex-direction: row;
 }
 
