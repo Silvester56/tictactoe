@@ -6,20 +6,31 @@ class Board extends React.Component {
       super(props);
       this.state = {
         squares: Array(parseInt(this.props.size)).fill(null),
-        player: "X"
+        player: "X",
+		  history: [Array(parseInt(this.props.size)).fill(null)]
       };
   }
+
+	goBack(index) {
+		this.setState({
+  		 squares: this.state.history[index],
+  		 history: this.state.history.slice(0, index + 1)
+  	 });
+	}
 
   handleClick(i) {
     const newSquares = this.state.squares.slice();
     const nextPlayer = this.state.player == 'X' ? 'O' : 'X';
-	 console.log(i);
 
     if (calculateWinner(newSquares) || newSquares[i]) {
       return;
     }
     newSquares[i] = this.state.player;
-    this.setState({squares: newSquares, player: nextPlayer});
+    this.setState({
+		 squares: newSquares,
+		 player: nextPlayer,
+		 history: this.state.history.concat([newSquares])
+	 });
   }
 
   renderFor() {
@@ -32,14 +43,27 @@ class Board extends React.Component {
 		return str;
   }
 
+  renderOptions() {
+	  if (this.state.history.length > 0) {
+	  		return this.state.history.map((state, index) =>
+				<option onClick={() => this.goBack(index)}>{index}</option>
+			);
+	  }
+  }
+
   render() {
     const winner = calculateWinner(this.state.squares);
 
     return (
+		<React.Fragment>
       <div>
         <div className="status">{winner ? 'Winner : ' + winner : 'Current player: ' + this.state.player}</div>
           {this.renderFor()}
       </div>
+		<select value={this.state.history.length - 1}>
+			{this.renderOptions()}
+		</select>
+		</React.Fragment>
     );
   }
 }
