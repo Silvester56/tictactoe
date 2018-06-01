@@ -20,21 +20,17 @@ class Game extends React.Component {
 		return str;
 	}
 
-	handleChange(event) {
-	    this.setState({value: event.target.value});
-   }
-
 	renderPlay() {
 		if (this.state.playing) {
 			return <Board size={this.state.value}/>
 		} else {
 			return (
-				<div>
-				<select value={this.state.value} onChange={(event) => this.handleChange(event)}>
+				<React.Fragment>
+				<select value={this.state.value} onChange={(event) => this.setState({value: event.target.value})}>
 					{this.renderOptions()}
 				</select>
 				<button onClick={() => this.setState({playing: true})}>Go!</button>
-				</div>
+				</React.Fragment>
 			);
 		}
 	}
