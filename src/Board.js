@@ -13,6 +13,7 @@ class Board extends React.Component {
 
 	goBack(index) {
 		this.setState({
+		 player: index % 2 == 0 ? "X" : "O",
   		 squares: this.state.history[index],
   		 history: this.state.history.slice(0, index + 1)
   	 });
@@ -51,13 +52,20 @@ class Board extends React.Component {
 	  }
   }
 
+  getName() {
+	  if (this.state.player == "X") {
+	  		return this.props.names[0] !== "" ? this.props.names[0] : "X";
+	  }
+	   return this.props.names[1] !== "" ? this.props.names[1] : "O";
+  }
+
   render() {
     const winner = calculateWinner(this.state.squares);
 
     return (
 		<React.Fragment>
       <div>
-        <div className="status">{winner ? 'Winner : ' + winner : 'Current player: ' + this.state.player}</div>
+        <div className="status">{winner ? 'Winner : ' + this.props.names[winner] : this.props.names[this.state.player] + ", your turn."}</div>
           {this.renderFor()}
       </div>
 		<select value={this.state.history.length - 1}>

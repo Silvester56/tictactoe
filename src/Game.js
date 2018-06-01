@@ -6,8 +6,16 @@ class Game extends React.Component {
 		super(props);
 		this.state = {
 			playing: false,
-			value: "9"
+			value: "9",
+			names: []
 		};
+	}
+
+	onInput(index, event) {
+		let tab = this.state.names;
+
+		tab[index] = event.target.value;
+		this.setState({name: tab});
 	}
 
 	renderOptions() {
@@ -22,14 +30,16 @@ class Game extends React.Component {
 
 	renderPlay() {
 		if (this.state.playing) {
-			return <Board size={this.state.value}/>
+			return <Board size={this.state.value} names={this.state.names}/>
 		} else {
 			return (
 				<React.Fragment>
 				<select value={this.state.value} onChange={(event) => this.setState({value: event.target.value})}>
 					{this.renderOptions()}
 				</select>
-				<button onClick={() => this.setState({playing: true})}>Go!</button>
+				<button onClick={() => this.setState({playing: true})}>Go!</button><br/>
+				<span>Player X : </span><input onChange={event => this.onInput("X", event)} type="text"/><br/>
+				<span>Player O : </span><input onChange={event => this.onInput("O", event)} type="text"/>
 				</React.Fragment>
 			);
 		}
@@ -41,10 +51,6 @@ class Game extends React.Component {
 				<div className="game-board">
 					<h2>TicTacToe</h2>
 					{this.renderPlay()}
-				</div>
-				<div className="game-info">
-					<div>{/* status */}</div>
-					<ol>{/* TODO */}</ol>
 				</div>
 			</div>
 		);
