@@ -38,8 +38,8 @@ class Game extends React.Component {
 					{this.renderOptions()}
 				</select>
 				<button onClick={() => this.setState({playing: true})}>Go!</button><br/>
-				<span>Player X : </span><input onChange={event => this.onInput("X", event)} type="text"/><br/>
-				<span>Player O : </span><input onChange={event => this.onInput("O", event)} type="text"/>
+				<span>Player X : </span><input onChange={event => this.onInput(0, event)} type="text"/><br/>
+				<span>Player O : </span><input onChange={event => this.onInput(1, event)} type="text"/>
 				</React.Fragment>
 			);
 		}

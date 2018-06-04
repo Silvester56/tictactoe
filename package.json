@@ -10,13 +10,22 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "mocha --reporter spec testSetup.js \"test/*Spec.js\"",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
     "chai-enzyme": "^0.8.0",
     "enzyme": "^3.3.0",
+    "expect": "^23.1.0",
     "jasmine-enzyme": "^6.0.1",
-    "mocha": "^5.2.0"
+    "jsdom": "^11.11.0",
+    "mocha": "^5.2.0",
+    "react-addons-test-utils": "^15.6.2",
+		"ajv": "^6.0.0",
+ 		"chai": "^3.0.0",
+ 		"cheerio": "^0.19.x",
+ 		"enzyme": "^1.x",
+ 		"react": "^0.14.0",
+ 		"react-dom": "^0.14.0"
   }
 }

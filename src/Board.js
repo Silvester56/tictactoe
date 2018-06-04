@@ -4,10 +4,17 @@ import Row from './Row';
 class Board extends React.Component {
     constructor(props) {
       super(props);
+		let arrayNames = [];
+		arrayNames[0] = this.props.names[0] ? this.props.names[0] : "X";
+		arrayNames[1] = this.props.names[1] ? this.props.names[1] : "O";
+
+		console.log(this.props.names);
+
       this.state = {
         squares: Array(parseInt(this.props.size)).fill(null),
         player: "X",
-		  history: [Array(parseInt(this.props.size)).fill(null)]
+		  history: [Array(parseInt(this.props.size)).fill(null)],
+		  names: arrayNames
       };
   }
 
@@ -52,11 +59,11 @@ class Board extends React.Component {
 	  }
   }
 
-  getName() {
+  getName(winner) {
 	  if (this.state.player == "X") {
-	  		return this.props.names[0] !== "" ? this.props.names[0] : "X";
+	  		return this.state.names[winner ? 1 : 0];
 	  }
-	   return this.props.names[1] !== "" ? this.props.names[1] : "O";
+	   return this.state.names[winner ? 0 : 1];
   }
 
   render() {
@@ -65,7 +72,7 @@ class Board extends React.Component {
     return (
 		<React.Fragment>
       <div>
-        <div className="status">{winner ? 'Winner : ' + this.props.names[winner] : this.props.names[this.state.player] + ", your turn."}</div>
+        <div className="status">{winner ? 'Winner : ' + this.getName(true) : this.getName(false) + ", your turn."}</div>
           {this.renderFor()}
       </div>
 		<select value={this.state.history.length - 1}>
